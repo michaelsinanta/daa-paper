@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import java.util.Scanner;
 
 class EdgeListPair {
     public int u;
@@ -38,10 +37,8 @@ class DijkstraPair implements Comparable<DijkstraPair> {
     }
 }
 
-public class Johnson {
-    private static final int INF = 1000000000;
-    
-    private static int[] bellmanFord(int V, ArrayList<EdgeListPair> edgeList, int start) {
+public class Johnson extends APSP {
+    private int[] bellmanFord(int V, ArrayList<EdgeListPair> edgeList, int start) {
         int[] dist = new int[V+1];
         for (int i = 0; i < V+1; i++) {
             dist[i] = INF;
@@ -57,7 +54,7 @@ public class Johnson {
         return dist;
     }
     
-    private static boolean hasNegativeCycle(int V, ArrayList<EdgeListPair> edgeList, int[] dist) {
+    private boolean hasNegativeCycle(int V, ArrayList<EdgeListPair> edgeList, int[] dist) {
         for (EdgeListPair edge: edgeList) {
             if (dist[edge.v] > dist[edge.u] + edge.w) {
                 return true;
@@ -67,7 +64,7 @@ public class Johnson {
     }
     
     // TODO: inf set to 10^9 then pastiin gaada yang overflow
-    private static int[] dijkstra(ArrayList<ArrayList<AdjListPair>> adjList, int start) {
+    private int[] dijkstra(ArrayList<ArrayList<AdjListPair>> adjList, int start) {
         int V = adjList.size() - 1;
         int[] dist = new int[V+1];
         for (int i = 0; i <= V; i++) {
@@ -92,7 +89,7 @@ public class Johnson {
         return dist;
     }
     
-    public static int[][] johnson(int[][] adjMatrix) {
+    public int[][] johnson(int[][] adjMatrix) {
         // Menambahkan vertex s
         int N = adjMatrix.length;
         int V = N-1;
@@ -140,26 +137,8 @@ public class Johnson {
         return dist;
     }
     
-    public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
-        int V = input.nextInt();
-        int[][] adjMatrix = new int[V+1][V+1];
-        for (int i = 0; i <= V; i++) {
-            for (int j = 0; j <= V; j++) {
-                if (i == 0 || j == 0) {
-                    adjMatrix[i][j] = INF;
-                } else {
-                    adjMatrix[i][j] = input.nextInt();
-                }
-            }
-        }
-        int[][] dist = johnson(adjMatrix);
-        for (int i = 1; i <= V; i++) {
-            for (int j = 1; j <= V; j++) {
-                System.out.print(dist[i][j] + " ");
-            }
-            System.out.println();
-        }
-        input.close();
+    @Override
+    public int[][] run(int[][] adjMatrix) {
+        return johnson(adjMatrix);
     }
 }
