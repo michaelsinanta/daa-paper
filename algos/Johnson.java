@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
@@ -130,9 +129,11 @@ public class Johnson {
         // Pencarian Shortest Path
         int[][] dist = new int[N][];
         for (int u = 1; u < N; u++) {
-            dist[u] = dijkstra(adjList, u); // TODO: when not possible
+            dist[u] = dijkstra(adjList, u);
             for (int v = 1; v < N; v++) {
-                dist[u][v] = dist[u][v] + h[v] - h[u];
+                if (dist[u][v] < INF) {
+                    dist[u][v] = dist[u][v] + h[v] - h[u];
+                }
             }
         }
         
@@ -140,7 +141,6 @@ public class Johnson {
     }
     
     public static void main(String[] args) {
-        // TODO: 0..V harus terisi -> N = V+1
         Scanner input = new Scanner(System.in);
         int V = input.nextInt();
         int[][] adjMatrix = new int[V+1][V+1];
