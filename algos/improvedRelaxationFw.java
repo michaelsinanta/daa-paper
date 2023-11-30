@@ -3,7 +3,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class improvedFw{
+public class improvedRelaxationFw{
     public static final int MAXN = 1025;
     public static final int INF = 9999;
 
@@ -31,21 +31,8 @@ public class improvedFw{
             }
         }
 
-        // The outer loop
-        for (int kk = 0; kk < N; kk++) {
-            mink = -1;
-            mininxout = 2 * N * N;
-            // Choost the "best" k
-            for (int k = 0; k < N; k++) {
-                if ((select_k[k] == 0) && (inc[k] * outc[k] < mininxout)) {
-                    mink = k;
-                    mininxout = inc[k] * outc[k];
-                }
-            }
-            int k = mink; // "best" k
-            select_k[k] = 1; // remove selected vertex
-
-            // explore only useful relaxation attempts
+        // explore only useful relaxation attempts
+        for (int k = 0; k < N; k++) {
             for (int i = 0; i < inc[k]; i++) {
                 for (int j = 0; j < outc[k]; j++) {
                     if ((A[inlist[k][i]][k] + A[k][outlist[k][j]]) < A[inlist[k][i]][outlist[k][j]]) {
@@ -66,7 +53,7 @@ public class improvedFw{
 
     public static void main(String[] args) {
         // Modify this line to specify the path to your input file
-        String filePath = "out1.txt";
+        String filePath = "input.txt";
 
         File file = new File(filePath);
         FileInputStream inputStream;
@@ -87,17 +74,18 @@ public class improvedFw{
             int[][] result = new_fw(N, A);
             long endTime = System.nanoTime(); // Mark the end time
 
-            // System.out.println("Improved FW APSP");
-            // for (int i = 0; i < N; i++) {
-            //     for (int j = 0; j < N; j++) {
-            //         if (result[i][j] != INF) {
-            //             System.out.print(result[i][j] + " ");
-            //         } else {
-            //             System.out.print("X ");
-            //         }
-            //     }
-            //     System.out.println();
-            // }
+            System.out.println("Improved FW APSP");
+            for (int i = 0; i < N; i++) {
+                for (int j = 0; j < N; j++) {
+                    if (result[i][j] != INF) {
+                        System.out.print(result[i][j] + " ");
+                    } else {
+                        System.out.print("X ");
+                    }
+                }
+                System.out.println();
+            }
+            
             long executionTime = endTime - startTime; // Calculate the execution time
 
             System.out.println("Execution Time: " + executionTime + " nano seconds");
