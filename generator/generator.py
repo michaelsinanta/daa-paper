@@ -3,19 +3,21 @@ import random
 import os
 import time
 
-INF = 9999
+INF = 1000000000
 random.seed(time.time())
 
 def generate_graph_matrix(N: int, E: int):
-    adj_matrix = [[INF for _ in range(N + 1)] for _ in range(N + 1)]
+    adj_matrix = [[INF for _ in range(N)] for _ in range(N)]
     while E > 0:
-        u = random.randint(1, N)
-        v = random.randint(1, N)
+        u = random.randint(0, N-1)
+        v = random.randint(0, N-1)
         w = random.randint(1, 100)
         if adj_matrix[u][v] >= INF and u != v:
             adj_matrix[u][v] = w
             adj_matrix[v][u] = w
             E -= 1
+    for i in range(N):
+        adj_matrix[i][i] = 0
     return adj_matrix
 
 vrtx = [20, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1024]
