@@ -37,9 +37,10 @@ public class ImprovedSelectionFloydWarshall extends APSP {
                     minProduct = curProduct;
                 }
             }
+            isVisited[k] = true;
             
-            for (int i = 1; i <= in.get(k).size(); i++) {
-                for (int j = 1; j <= out.get(k).size(); j++) {
+            for (int i = 0; i < in.get(k).size(); i++) {
+                for (int j = 0; j < out.get(k).size(); j++) {
                     int u = in.get(k).get(i);
                     int v = out.get(k).get(j);
                     if (dist[u][k] + dist[k][v] < dist[u][v]) {
@@ -47,8 +48,8 @@ public class ImprovedSelectionFloydWarshall extends APSP {
                             out.get(u).add(v);
                             in.get(v).add(u);
                         }
+                        dist[u][v] = dist[u][k] + dist[k][v];
                     }
-                    dist[u][v] = dist[u][k] + dist[k][v];
                 }
             }
         }
