@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
@@ -9,9 +8,9 @@ public class Main {
         if (algoName.equals("Floyd Warshall")) {
             return new FloydWarshall();
         } else if (algoName.equals("Improved Floyd Warshall"))  {
-            return new ImprovedFloydWarshall();
+            return new ImprovedRelaxationFloydWarshall();
         } else if (algoName.equals("More Improved Floyd Warshall")) {
-            return new MoreImprovedFloydWarshall();
+            return new ImprovedSelectionFloydWarshall();
         } else if (algoName.equals("Johnson")) {
             return new Johnson();
         } else if (algoName.equals("Dijkstra |V| Times")) {
@@ -78,8 +77,8 @@ public class Main {
                 
                 runningTime[cnt] = new long[]{
                     test("Floyd Warshall", adjMatrix, solution),
-                    test("Improved Floyd Warshall", adjMatrix, solution),
-                    test("More Improved Floyd Warshall", adjMatrix, solution),
+                    test("Improved Relaxation Floyd Warshall", adjMatrix, solution),
+                    test("Improved Selection Floyd Warshall", adjMatrix, solution),
                     test("Johnson", adjMatrix, solution),
                     test("Dijkstra |V| Times", adjMatrix, solution),
                 };
@@ -88,5 +87,7 @@ public class Main {
             }
             category++;
         }
+        
+        // TODO: process runningTime here
     }
 }

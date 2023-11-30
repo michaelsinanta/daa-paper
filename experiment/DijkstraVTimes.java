@@ -37,32 +37,7 @@ class DijkstraPair implements Comparable<DijkstraPair> {
     }
 }
 
-public class Johnson extends APSP {
-    private int[] bellmanFord(int V, ArrayList<EdgeListPair> edgeList, int start) {
-        int[] dist = new int[V+1];
-        for (int i = 0; i < V+1; i++) {
-            dist[i] = INF;
-        }
-        dist[start] = 0;
-        for (int i = 1; i < V; i++) {
-            for (EdgeListPair edge: edgeList) {
-                if (dist[edge.v] > dist[edge.u] + edge.w) {
-                    dist[edge.v] = dist[edge.u] + edge.w;
-                }
-            }
-        }
-        return dist;
-    }
-    
-    private boolean hasNegativeCycle(int V, ArrayList<EdgeListPair> edgeList, int[] dist) {
-        for (EdgeListPair edge: edgeList) {
-            if (dist[edge.v] > dist[edge.u] + edge.w) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
+public class DijkstraVTimes extends APSP {
     // TODO: inf set to 10^9 then pastiin gaada yang overflow
     private int[] dijkstra(ArrayList<ArrayList<AdjListPair>> adjList, int start) {
         int V = adjList.size() - 1;
@@ -89,49 +64,25 @@ public class Johnson extends APSP {
         return dist;
     }
     
-    public int[][] johnson(int[][] adjMatrix) {
+    public int[][] dijkstraVTimes(int[][] adjMatrix) {
         // Menambahkan vertex s
-        int N = adjMatrix.length;
-        int V = N-1;
-        for (int i = 0; i < N; i++) {
-            adjMatrix[0][i] = 0;
-        }
+        int V = adjMatrix.length - 1;
         
-        // Konversi adjacency matrix ke edge list untuk Bellman-Ford
-        ArrayList<EdgeListPair> edgeList = new ArrayList<>();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (i != j && adjMatrix[i][j] < INF) {
-                    edgeList.add(new EdgeListPair(i, j, adjMatrix[i][j]));
-                }
-            }
-        }
-        
-        // Reweighting
-        int[] h = bellmanFord(V, edgeList, 0);
-        if (hasNegativeCycle(V, edgeList, h)) {
-            return null;
-        }
         ArrayList<ArrayList<AdjListPair>> adjList = new ArrayList<>();
         adjList.add(null);
-        for (int i = 1; i < N; i++) {
+        for (int i = 1; i <= V; i++) {
             adjList.add(new ArrayList<>());
-            for (int j = 1; j < N; j++) {
+            for (int j = 1; j <= V; j++) {
                 if (i != j && adjMatrix[i][j] < INF) {
-                    adjList.get(i).add(new AdjListPair(j, adjMatrix[i][j] + h[i] - h[j]));
+                    adjList.get(i).add(new AdjListPair(j, adjMatrix[i][j]));
                 }
             }
         }
         
         // Pencarian Shortest Path
-        int[][] dist = new int[N][];
-        for (int u = 1; u < N; u++) {
+        int[][] dist = new int[V+1][];
+        for (int u = 1; u <= V; u++) {
             dist[u] = dijkstra(adjList, u);
-            for (int v = 1; v < N; v++) {
-                if (dist[u][v] < INF) {
-                    dist[u][v] = dist[u][v] + h[v] - h[u];
-                }
-            }
         }
         
         return dist;
@@ -139,6 +90,6 @@ public class Johnson extends APSP {
     
     @Override
     public int[][] run(int[][] adjMatrix) {
-        return johnson(adjMatrix);
+        return dijkstraVTimes(adjMatrix);
     }
 }
