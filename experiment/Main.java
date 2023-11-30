@@ -3,7 +3,7 @@ import java.io.FileWriter;
 import java.util.Scanner;
 
 public class Main {
-    private static final int[] TEST_CASES = new int[]{10, 10, 10, 10, 10, 10, 10, 10, 10};
+    private static final int[] TEST_CASES = new int[]{30, 30, 30, 30, 30, 30, 30, 30, 30};
     
     public static APSP getAPSP(String algoName) {
         if (algoName.equals("Floyd Warshall")) {
@@ -64,6 +64,7 @@ public class Main {
         for (int categoryTests: TEST_CASES) {
             int cnt = 0;
             long[][] runningTime = new long[categoryTests][5];
+            int[] vertexCount = new int[categoryTests];
             while (cnt < categoryTests) {
                 System.out.println("Running category " + category + " on test " + cnt);
                 
@@ -96,6 +97,7 @@ public class Main {
                 // }
                 // scannerOutput.close();
                 
+                vertexCount[cnt] = solution.length - 1;
                 runningTime[cnt] = new long[]{
                     test("Floyd Warshall", adjMatrix, solution),
                     test("Improved Relaxation Floyd Warshall", adjMatrix, solution),
@@ -110,8 +112,9 @@ public class Main {
             File file = new File(outputPath);
             file.getParentFile().mkdirs();
             FileWriter writer = new FileWriter(file);
-            writer.append("\"Floyd Warshall\",\"Improved Relaxation Floyd Warshall\",\"Improved Selection Floyd Warshall\",\"Johnson\",\"Dijkstra |V| Times\"\n");
+            writer.append("\"V\",\"Floyd Warshall\",\"Improved Relaxation Floyd Warshall\",\"Improved Selection Floyd Warshall\",\"Johnson\",\"Dijkstra |V| Times\"\n");
             for (int i = 0; i < runningTime.length; i++) {
+                writer.append(Integer.toString(vertexCount[i]) + ",");
                 for (int j = 0; j < 5; j++) {
                     if (j > 0) {
                         writer.append(",");
