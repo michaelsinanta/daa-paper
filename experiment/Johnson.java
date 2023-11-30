@@ -101,7 +101,7 @@ public class Johnson extends APSP {
         ArrayList<EdgeListPair> edgeList = new ArrayList<>();
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                if (adjMatrix[i][j] < INF) {
+                if (i != j && adjMatrix[i][j] < INF) {
                     edgeList.add(new EdgeListPair(i, j, adjMatrix[i][j]));
                 }
             }
@@ -117,7 +117,7 @@ public class Johnson extends APSP {
         for (int i = 1; i < N; i++) {
             adjList.add(new ArrayList<>());
             for (int j = 1; j < N; j++) {
-                if (adjMatrix[i][j] < INF) {
+                if (i != j && adjMatrix[i][j] < INF) {
                     adjList.get(i).add(new AdjListPair(j, adjMatrix[i][j] + h[i] - h[j]));
                 }
             }
